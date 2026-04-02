@@ -1,12 +1,124 @@
-document. addEventListener ("mousedown", function (event)
-if ((event.button = 0)) {
-Input.mouse. left = true;
-}
-if ((event.button = 1)) {
-Input.mouse.middle = true;
-}
-if ((event.button = 2)) {
-Input.mouse.right = true;
-});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Calculator</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f5f6fa;
+      font-family: Arial, sans-serif;
+    }
+    .calculator {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px #ccc;
+      width: 250px;
+    }
+    .display {
+      height: 40px;
+      text-align: right;
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      background: #f7f9fa;
+      letter-spacing: 1px;
+      overflow-x: auto;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 10px;
+    }
+    button {
+      padding: 18px;
+      font-size: 1.1em;
+      border: none;
+      background: #f0f1f7;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button.operator {
+      background: #8ecae6;
+      color: #fff;
+    }
+    button.equal {
+      background: #2196f3;
+      color: #fff;
+      grid-column: span 2;
+    }
+    button:active {
+      background: #adb5bd;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button onclick="press('7')">7</button>
+      <button onclick="press('8')">8</button>
+      <button onclick="press('9')">9</button>
+      <button class="operator" onclick="press('/')">÷</button>
+      
+      <button onclick="press('4')">4</button>
+      <button onclick="press('5')">5</button>
+      <button onclick="press('6')">6</button>
+      <button class="operator" onclick="press('*')">&times;</button>
+      
+      <button onclick="press('1')">1</button>
+      <button onclick="press('2')">2</button>
+      <button onclick="press('3')">3</button>
+      <button class="operator" onclick="press('-')">−</button>
+      
+      <button onclick="press('0')">0</button>
+      <button onclick="press('.')">.</button>
+      <button onclick="clearDisplay()">C</button>
+      <button class="operator" onclick="press('+')">+</button>
+      
+      <button class="equal" onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <script>
+    let expression = '';
+
+    function press(value) {
+      if (expression === '' && ['+', '-', '*', '/', '.'].includes(value)) return;
+      if (expression === '0' && value !== '.') expression = '';
+
+      expression += value;
+      document.getElementById('display').innerText = expression;
+    }
+
+    function clearDisplay() {
+      expression = '';
+      document.getElementById('display').innerText = '0';
+    }
+
+    function calculate() {
+      try {
+        // Evaluate only basic math, prevent code execution
+        let result = Function('"use strict";return (' + expression + ')')();
+        if (result === undefined || isNaN(result)) throw 'Error';
+        document.getElementById('display').innerText = result;
+        expression = result.toString();
+      } catch {
+        document.getElementById('display').innerText = 'Error';
+        expression = '';
+      }
+    }
+  </script>
+
+</body>
+</html>
 
 
