@@ -1,1 +1,48 @@
-Anya Apa imádlak titeket 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>100 Goofy Ahh Soundboard</title>
+</head>
+<body>
+
+<h1>🎵 Goofy Ahh Soundboard (100 Buttons)</h1>
+<div id="buttons"></div>
+
+<script>
+  const container = document.getElementById("buttons");
+
+  for (let i = 1; i <= 100; i++) {
+    const btn = document.createElement("button");
+    btn.innerText = "Sound " + i;
+
+    btn.onclick = () => {
+      const audio = new Audio("sounds/sound" + i + ".mp3");
+      audio.play();
+    };
+
+    container.appendChild(btn);
+  }
+</script>
+
+</body>
+</html>
+/project-folder
+  ├── index.html
+  └── /sounds
+       ├── sound1.mp3
+       ├── sound2.mp3
+       ├── ...
+       └── sound100.mp3
+<style>
+  #buttons {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 10px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 14px;
+  }
+</style>
+
