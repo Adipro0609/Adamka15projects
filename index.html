@@ -1,31 +1,83 @@
+const express = require("express");
+const session = require("express-session");
+const bodyParser = require("body-parser");
+
+const app = express();
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+    secret: "secret-key",
+    resave: false,
+    saveUninitialized: true
+}));
+
+// Fake user (for demo)
+const USER = {
+    username: "admin",
+    password: "1234"
+};
+
+// Routes
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/login.html");
+});
+
+app.post("/login", (req, res) => {
+    const { username, password } = req.body;
+
+    if (username === USER.username && password === USER.password) {
+        req.session.loggedIn = true;
+        res.redirect("/home");
+    } else {
+        res.send("Invalid login. <a href='/'>Try again</a>");
+    }
+});
+
+app.get("/home", (req, res) => {
+    if (req.session.loggedIn) {
+        res.sendFile(__dirname + "/home.html");
+    } else {
+        res.redirect("/");
+    }
+});
+
+app.get("/logout", (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
+});
+
+// Start server
+app.listen(3000, () => {
+    console.log("Server running on http://localhost:3000");
+});
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sound Buttons</title>
+    <title>Login</title>
 </head>
 <body>
-    <!-- Example Buttons -->
-    <button id="button1">Sound 1</button>
-    <button id="button2">Sound 2</button>
-    <!-- Repeat for all 100 buttons -->
-    
-    <script>
-        // Function to play sound by URL
-        function playSound(url) {
-            let audio = new Audio(url);
-            audio.play();
-        }
+    <h2>Login to MyTube</h2>
+    <form action="/login" method="POST">
+        <input type="text" name="username" placeholder="Username" required><br><br>
+        <input type="password" name="password" placeholder="Password" required><br><br>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MyTube</title>
+</head>
+<body>
+    <h1>Welcome to MyTube 🎥</h1>
 
-        // Assign click handlers for each button
-        document.getElementById('button1').addEventListener('click', function() {
-            playSound('URL_TO_SOUND_1');
-        });
-        document.getElementById('button2').addEventListener('click', function() {
-            playSound('URL_TO_SOUND_2');
-        });
-        // Repeat for all other buttons up to button100
-    </script>
+    <video width="400" controls>
+        <source src="sample.mp4" type="video/mp4">
+    </video>
+
+    <br><br>
+    <a href="/logout">Logout</a>
 </body>
 </html>
