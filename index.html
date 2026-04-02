@@ -1,42 +1,31 @@
-def calculator():
-    print("Simple Calculator")
-    print("Type 'q' to quit\n")
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Buttons</title>
+</head>
+<body>
+    <!-- Example Buttons -->
+    <button id="button1">Sound 1</button>
+    <button id="button2">Sound 2</button>
+    <!-- Repeat for all 100 buttons -->
+    
+    <script>
+        // Function to play sound by URL
+        function playSound(url) {
+            let audio = new Audio(url);
+            audio.play();
+        }
 
-    while True:
-        num1 = input("Enter first number: ")
-        if num1.lower() == 'q':
-            break
-
-        operator = input("Enter operator (+, -, *, /): ")
-        if operator.lower() == 'q':
-            break
-
-        num2 = input("Enter second number: ")
-        if num2.lower() == 'q':
-            break
-
-        try:
-            num1 = float(num1)
-            num2 = float(num2)
-
-            if operator == '+':
-                result = num1 + num2
-            elif operator == '-':
-                result = num1 - num2
-            elif operator == '*':
-                result = num1 * num2
-            elif operator == '/':
-                if num2 == 0:
-                    print("Error: Cannot divide by zero\n")
-                    continue
-                result = num1 / num2
-            else:
-                print("Invalid operator\n")
-                continue
-
-            print(f"Result: {result}\n")
-
-        except ValueError:
-            print("Invalid number input\n")
-
-calculator()
+        // Assign click handlers for each button
+        document.getElementById('button1').addEventListener('click', function() {
+            playSound('URL_TO_SOUND_1');
+        });
+        document.getElementById('button2').addEventListener('click', function() {
+            playSound('URL_TO_SOUND_2');
+        });
+        // Repeat for all other buttons up to button100
+    </script>
+</body>
+</html>
